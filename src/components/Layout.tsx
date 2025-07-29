@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
             <SidebarTrigger className="mr-4" />
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                NBA Draft Assistant
+                Fantasy Basketball Draft
               </h1>
             </div>
           </header>

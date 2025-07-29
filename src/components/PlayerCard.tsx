@@ -5,17 +5,18 @@ interface Player {
   id: string;
   name: string;
   position: string;
-  college: string;
+  team: string;
   height: string;
   weight: string;
   age: number;
   ranking: number;
-  projected_pick: number;
+  adp: number; // Average Draft Position
   stats: {
     ppg: number;
     rpg: number;
     apg: number;
     fg_percentage: number;
+    fantasy_points: number;
   };
 }
 
@@ -45,7 +46,7 @@ export function PlayerCard({ player, isDrafted = false, onDraft }: PlayerCardPro
             <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
               {player.name}
             </h3>
-            <p className="text-sm text-muted-foreground">{player.college}</p>
+            <p className="text-sm text-muted-foreground">{player.team}</p>
           </div>
           <div className="text-right">
             <Badge variant="outline" className="text-xs mb-1">
@@ -73,14 +74,14 @@ export function PlayerCard({ player, isDrafted = false, onDraft }: PlayerCardPro
             <p className="font-medium">{player.age}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">Proj. Pick</p>
-            <p className="font-medium">#{player.projected_pick}</p>
+            <p className="text-muted-foreground">ADP</p>
+            <p className="font-medium">{player.adp.toFixed(1)}</p>
           </div>
         </div>
 
         <div className="border-t border-border/50 pt-3">
-          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Stats</p>
-          <div className="grid grid-cols-4 gap-2 text-sm">
+          <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Fantasy Stats</p>
+          <div className="grid grid-cols-3 gap-2 text-sm mb-3">
             <div className="text-center">
               <p className="font-bold text-foreground">{player.stats.ppg}</p>
               <p className="text-xs text-muted-foreground">PPG</p>
@@ -92,6 +93,13 @@ export function PlayerCard({ player, isDrafted = false, onDraft }: PlayerCardPro
             <div className="text-center">
               <p className="font-bold text-foreground">{player.stats.apg}</p>
               <p className="text-xs text-muted-foreground">APG</p>
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-center text-sm">
+            <div className="text-center">
+              <p className="font-bold text-primary">{player.stats.fantasy_points}</p>
+              <p className="text-xs text-muted-foreground">FPTS/G</p>
             </div>
             <div className="text-center">
               <p className="font-bold text-foreground">{(player.stats.fg_percentage * 100).toFixed(1)}%</p>

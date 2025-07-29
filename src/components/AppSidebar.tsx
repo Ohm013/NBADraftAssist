@@ -18,7 +18,7 @@ import {
 const navigationItems = [
   { title: "Draft Board", url: "/", icon: Trophy },
   { title: "Player Rankings", url: "/rankings", icon: BarChart3 },
-  { title: "Team Rosters", url: "/teams", icon: Users },
+  { title: "My Teams", url: "/teams", icon: Users },
   { title: "Mock Draft", url: "/mock", icon: Calendar },
   { title: "Player Search", url: "/search", icon: Search },
   { title: "Settings", url: "/settings", icon: Settings },
@@ -47,8 +47,8 @@ export function AppSidebar() {
                 <Trophy className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-sidebar-foreground">NBA Draft</h2>
-                <p className="text-xs text-sidebar-foreground/60">Assistant</p>
+                <h2 className="font-bold text-sidebar-foreground">Fantasy BB</h2>
+                <p className="text-xs text-sidebar-foreground/60">Draft Assistant</p>
               </div>
             </div>
           )}

@@ -6,81 +6,87 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Filter, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-// Mock data - in a real app this would come from an API
+// Mock fantasy basketball players - in a real app this would come from an API
 const mockPlayers = [
   {
     id: "1",
-    name: "Victor Wembanyama",
+    name: "Nikola Jokic",
     position: "C",
-    college: "Metropolitans 92",
-    height: "7'4\"",
-    weight: "230 lbs",
-    age: 20,
+    team: "Denver Nuggets",
+    height: "6'11\"",
+    weight: "284 lbs",
+    age: 29,
     ranking: 1,
-    projected_pick: 1,
-    stats: { ppg: 21.4, rpg: 10.4, apg: 3.0, fg_percentage: 0.462 }
+    adp: 1.2,
+    stats: { ppg: 24.5, rpg: 11.8, apg: 9.8, fg_percentage: 0.632, fantasy_points: 58.4 }
   },
   {
     id: "2",
-    name: "Scoot Henderson",
+    name: "Luka Doncic",
     position: "PG",
-    college: "G League Ignite",
-    height: "6'2\"",
-    weight: "195 lbs",
-    age: 19,
+    team: "Dallas Mavericks",
+    height: "6'7\"",
+    weight: "230 lbs",
+    age: 25,
     ranking: 2,
-    projected_pick: 2,
-    stats: { ppg: 16.5, rpg: 5.4, apg: 6.8, fg_percentage: 0.438 }
+    adp: 1.8,
+    stats: { ppg: 32.4, rpg: 8.6, apg: 8.0, fg_percentage: 0.456, fantasy_points: 57.8 }
   },
   {
     id: "3",
-    name: "Brandon Miller",
-    position: "SF",
-    college: "Alabama",
-    height: "6'9\"",
-    weight: "200 lbs",
-    age: 20,
+    name: "Shai Gilgeous-Alexander",
+    position: "PG",
+    team: "Oklahoma City Thunder",
+    height: "6'6\"",
+    weight: "195 lbs",
+    age: 26,
     ranking: 3,
-    projected_pick: 3,
-    stats: { ppg: 18.8, rpg: 8.2, apg: 2.3, fg_percentage: 0.433 }
+    adp: 2.5,
+    stats: { ppg: 30.1, rpg: 5.5, apg: 6.2, fg_percentage: 0.535, fantasy_points: 54.2 }
   },
   {
     id: "4",
-    name: "Amen Thompson",
-    position: "SG",
-    college: "Overtime Elite",
-    height: "6'7\"",
-    weight: "210 lbs",
-    age: 20,
+    name: "Giannis Antetokounmpo",
+    position: "PF",
+    team: "Milwaukee Bucks",
+    height: "6'11\"",
+    weight: "243 lbs",
+    age: 29,
     ranking: 4,
-    projected_pick: 5,
-    stats: { ppg: 15.2, rpg: 6.8, apg: 7.1, fg_percentage: 0.521 }
+    adp: 3.1,
+    stats: { ppg: 30.4, rpg: 11.5, apg: 6.5, fg_percentage: 0.612, fantasy_points: 56.7 }
   },
   {
     id: "5",
-    name: "Ausar Thompson",
-    position: "SG",
-    college: "Overtime Elite",
-    height: "6'7\"",
-    weight: "205 lbs",
-    age: 20,
+    name: "Jayson Tatum",
+    position: "SF",
+    team: "Boston Celtics",
+    height: "6'8\"",
+    weight: "210 lbs",
+    age: 26,
     ranking: 5,
-    projected_pick: 6,
-    stats: { ppg: 14.8, rpg: 7.2, apg: 6.4, fg_percentage: 0.498 }
+    adp: 4.2,
+    stats: { ppg: 26.9, rpg: 8.1, apg: 4.9, fg_percentage: 0.466, fantasy_points: 48.3 }
   }
 ];
 
-const nbaTeams = [
-  { name: "San Antonio Spurs", pick: 1 },
-  { name: "Charlotte Hornets", pick: 2 },
-  { name: "Portland Trail Blazers", pick: 3 },
-  { name: "Houston Rockets", pick: 4 },
-  { name: "Detroit Pistons", pick: 5 },
+const fantasyTeams = [
+  { name: "Team Alpha", owner: "Alex", pick: 1 },
+  { name: "Thunder Bolts", owner: "Jordan", pick: 2 },
+  { name: "Slam Dunkers", owner: "Taylor", pick: 3 },
+  { name: "Court Kings", owner: "Casey", pick: 4 },
+  { name: "Hoop Dreams", owner: "Morgan", pick: 5 },
+  { name: "Ball Hawks", owner: "Riley", pick: 6 },
+  { name: "Dunk Squad", owner: "Avery", pick: 7 },
+  { name: "Triple Threat", owner: "Blake", pick: 8 },
+  { name: "Fast Break", owner: "Drew", pick: 9 },
+  { name: "Clutch Time", owner: "Sage", pick: 10 },
 ];
 
 interface DraftPick {
   pick: number;
   team: string;
+  owner: string;
   player?: any;
 }
 
@@ -91,7 +97,7 @@ export default function DraftBoard() {
   const [selectedPosition, setSelectedPosition] = useState<string>("ALL");
   
   const [draftBoard, setDraftBoard] = useState<DraftPick[]>(
-    nbaTeams.map(team => ({ pick: team.pick, team: team.name }))
+    fantasyTeams.map(team => ({ pick: team.pick, team: team.name, owner: team.owner }))
   );
 
   const handleDraftPlayer = (player: any) => {
@@ -108,14 +114,14 @@ export default function DraftBoard() {
   };
 
   const resetDraft = () => {
-    setDraftBoard(nbaTeams.map(team => ({ pick: team.pick, team: team.name })));
+    setDraftBoard(fantasyTeams.map(team => ({ pick: team.pick, team: team.name, owner: team.owner })));
     setAvailablePlayers(mockPlayers);
     setDraftedPlayers([]);
   };
 
   const filteredPlayers = availablePlayers.filter(player => {
     const matchesSearch = player.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         player.college.toLowerCase().includes(searchTerm.toLowerCase());
+                         player.team.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPosition = selectedPosition === "ALL" || player.position === selectedPosition;
     return matchesSearch && matchesPosition;
   });
@@ -126,8 +132,8 @@ export default function DraftBoard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Draft Board</h1>
-          <p className="text-muted-foreground">Track your NBA draft selections in real-time</p>
+          <h1 className="text-3xl font-bold text-foreground">Fantasy Draft Board</h1>
+          <p className="text-muted-foreground">Track your fantasy basketball draft picks in real-time</p>
         </div>
         <Button onClick={resetDraft} variant="outline" className="gap-2">
           <RotateCcw className="w-4 h-4" />
@@ -146,7 +152,7 @@ export default function DraftBoard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
+              <div className="space-y-3 max-h-96 overflow-y-auto">
                 {draftBoard.map((pick) => (
                   <div 
                     key={pick.pick} 
@@ -162,11 +168,13 @@ export default function DraftBoard() {
                           Pick #{pick.pick}
                         </Badge>
                         <p className="font-medium text-sm">{pick.team}</p>
+                        <p className="text-xs text-muted-foreground">{pick.owner}</p>
                       </div>
                       {pick.player && (
                         <div className="text-right">
                           <p className="font-bold text-sm text-primary">{pick.player.name}</p>
-                          <p className="text-xs text-muted-foreground">{pick.player.position} - {pick.player.college}</p>
+                          <p className="text-xs text-muted-foreground">{pick.player.position} - {pick.player.team}</p>
+                          <p className="text-xs text-muted-foreground">{pick.player.stats.fantasy_points} FPTS</p>
                         </div>
                       )}
                     </div>
@@ -186,7 +194,7 @@ export default function DraftBoard() {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search players..."
+                    placeholder="Search players or teams..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
